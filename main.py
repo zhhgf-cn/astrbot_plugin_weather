@@ -748,7 +748,7 @@ async def _check_weather_alerts(location: str) -> tuple[str | None, dict[str, An
     "astrbot_plugin_weather",
     "zhhgf-cn",
     "天气查询插件 - 实时天气/逐小时预报/多城市对比/日出日落/灾害预警推送",
-    "2.1.0",
+    "2.1.1",
     "https://github.com/zhhgf-cn/astrbot_plugin_weather",
 )
 class WeatherPlugin(Star):
@@ -874,8 +874,8 @@ class WeatherPlugin(Star):
         """获取指定城市的天气信息。当用户询问天气相关问题时调用此工具。
 
         Args:
-            location: 城市名称，支持中文、英文、机场代码。例如: "北京"、"Shanghai"、"Paris"
-            include_forecast: 是否包含未来3天天气预报。默认为 False（仅当前天气）。用户明确要求"预报"或"未来几天"时设为 True。
+            location(string): 城市名称，支持中文、英文、机场代码。例如: "北京"、"Shanghai"、"Paris"
+            include_forecast(boolean): 是否包含未来3天天气预报。默认为 False（仅当前天气）。用户明确要求"预报"或"未来几天"时设为 True。
         """
         location = location.strip().replace(" ", "+")
         result = await _query_weather(location, include_forecast=include_forecast)
@@ -890,7 +890,7 @@ class WeatherPlugin(Star):
         """对比多个城市的当前天气。当用户想比较不同城市天气时调用此工具，例如"北京和上海哪个热"、"对比东京伦敦纽约的天气"。
 
         Args:
-            locations: 要对比的城市名称列表（2-5个城市）。例如: ["北京", "上海", "广州"]
+            locations(array[string]): 要对比的城市名称列表（2-5个城市）。例如: ["北京", "上海", "广州"]
         """
         if not locations or len(locations) < 2:
             return "请提供至少 2 个城市进行对比。"
@@ -915,8 +915,8 @@ class WeatherPlugin(Star):
         """获取指定城市的逐小时天气预报。当用户需要知道一天中某个时段的天气时调用，例如"今天下午会下雨吗"、"明天几点出太阳"。
 
         Args:
-            location: 城市名称，支持中文、英文、机场代码。例如: "北京"、"Shanghai"
-            day: 要查询哪一天。可选值: "today"（今天）、"tomorrow"（明天）、"day_after_tomorrow"（后天）。默认 "today"。
+            location(string): 城市名称，支持中文、英文、机场代码。例如: "北京"、"Shanghai"
+            day(string): 要查询哪一天。可选值: "today"（今天）、"tomorrow"（明天）、"day_after_tomorrow"（后天）。默认 "today"。
         """
         day_map = {"today": 0, "tomorrow": 1, "day_after_tomorrow": 2}
         day_index = day_map.get(day, 0)
@@ -934,7 +934,7 @@ class WeatherPlugin(Star):
         """获取指定城市的日出日落和月相信息。当用户询问日出日落时间、月相、天文信息时调用。
 
         Args:
-            location: 城市名称，支持中文、英文、机场代码。例如: "北京"、"Tokyo"
+            location(string): 城市名称，支持中文、英文、机场代码。例如: "北京"、"Tokyo"
         """
         location = location.strip().replace(" ", "+")
         result = await _query_astronomy(location)
@@ -953,7 +953,7 @@ class WeatherPlugin(Star):
         """订阅指定城市的灾害天气预警。当用户要求订阅天气预警、开启天气提醒时调用。订阅后该城市出现灾害天气会自动推送到当前会话。
 
         Args:
-            location: 要订阅的城市名称。例如: "北京"、"上海"、"Tokyo"
+            location(string): 要订阅的城市名称。例如: "北京"、"上海"、"Tokyo"
         """
         location = location.strip()
         if not location:
@@ -990,7 +990,7 @@ class WeatherPlugin(Star):
         """取消订阅灾害天气预警。当用户要求取消天气预警订阅、关闭天气提醒时调用。
 
         Args:
-            location: 要取消订阅的城市名称。传 "全部" 或 "all" 可取消所有订阅。
+            location(string): 要取消订阅的城市名称。传 "全部" 或 "all" 可取消所有订阅。
         """
         location = location.strip()
         umo = event.unified_msg_origin
@@ -1042,11 +1042,7 @@ class WeatherPlugin(Star):
         self,
         event: AstrMessageEvent,
     ):
-        """立即检查当前会话所有订阅城市的灾害天气预警。当用户要求检查天气预警、看看有没有灾害天气时调用。
-
-        Args:
-            location: 可选，指定要检查的单个城市名。不提供则检查当前会话所有订阅城市。
-        """
+        """立即检查当前会话所有订阅城市的灾害天气预警。当用户要求检查天气预警、看看有没有灾害天气时调用。无需参数，自动检查当前会话订阅的所有城市。"""
         umo = event.unified_msg_origin
         subs: dict[str, list] = await self.get_kv_data("weather_alert_subs", {})
 

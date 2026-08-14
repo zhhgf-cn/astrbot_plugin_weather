@@ -2,7 +2,7 @@ name: astrbot_plugin_weather
 display_name: "天气查询"
 short_desc: 天气查询+灾害预警推送，8个AI工具+定时全群推送。
 desc: "基于 wttr.in 的天气查询插件。提供 8 个 LLM 工具（天气/预报、多城市对比、逐小时预报、日出日落、订阅预警、退订预警、预警列表、检查预警）和灾害天气预警推送系统（订阅城市后定时检查，发现暴雨/雷暴/暴雪/极端高温/大风/大雾等灾害自动全群推送）。所有指令纯中文，无需 API Key。"
-version: v2.1.0
+version: v2.1.1
 author: zhhgf-cn
 repo: https://github.com/zhhgf-cn/astrbot_plugin_weather
 astrbot_version: ">=4.16,<5"
