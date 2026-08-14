@@ -1,0 +1,19 @@
+{
+  "alert_check_interval": {
+    "type": "string",
+    "description": "灾害预警检查周期（cron 表达式，5段：分 时 日 月 周）",
+    "hint": "默认每 2 小时检查一次。例如：0 */2 * * * 每2小时，0 */1 * * * 每1小时，0 8,12,18 * * * 每天8/12/18点",
+    "default": "0 */2 * * *"
+  },
+  "alert_min_level": {
+    "type": "string",
+    "description": "推送的最低预警等级",
+    "hint": "低于此等级的预警不会推送。danger=仅危险级别，warn=警告及以上，info=全部",
+    "default": "warn",
+    "options": [
+      {"label": "全部推送 (info)", "value": "info"},
+      {"label": "警告及以上 (warn)", "value": "warn"},
+      {"label": "仅危险级别 (danger)", "value": "danger"}
+    ]
+  }
+}
